@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PricesService } from '../prices/prices.service';
-import { User } from '../users/entities/user.entity';
 import { Cat } from 'src/users/entities/cat.entity';
 import { NextDeliveryDto } from './dto/next-delivery.dto';
 

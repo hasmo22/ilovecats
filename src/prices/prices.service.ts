@@ -4,12 +4,12 @@ import { Cat } from 'src/users/entities/cat.entity';
 @Injectable()
 export class PricesService {
   private pouchSizePricing: Record<string, number> = {
-    A: 55.5,
-    B: 59.5,
-    C: 62.75,
-    D: 66.0,
-    E: 69.0,
-    F: 71.25,
+    "A": 55.5,
+    "B": 59.5,
+    "C": 62.75,
+    "D": 66.0,
+    "E": 69.0,
+    "F": 71.25,
   };
 
   calculatePrice(cats: Cat[]): number {
@@ -22,7 +22,7 @@ export class PricesService {
     }, 0);
   }
 
-  eligibleForFreeGift(totalPrice: number) {
-    return (totalPrice > 120 ? true : false);
+  eligibleForFreeGift(totalPrice: number): boolean {
+    return totalPrice > 120;
   }
 }

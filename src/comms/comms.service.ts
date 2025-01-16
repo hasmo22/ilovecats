@@ -12,7 +12,7 @@ export class CommsService {
     private readonly deliveriesService: DeliveriesService,
   ) {}
 
-  async getWelcomeMessage(userId: UUID): Promise<string> {
+  getWelcomeMessage(userId: UUID): String {
     const user: User | undefined = this.usersService.findOne(userId);
 
     if (!user) {
@@ -25,22 +25,26 @@ export class CommsService {
     return `Welcome to KatKin, ${fullName}! We're super excited for ${formattedCatNames} to join the KatKin club and start loving fresh!`;
   }
 
-  async getNextDeliveryDetails(userId: UUID) {
+  getNextDeliveryDetails(userId: UUID): {
+    title: string;
+    message: string;
+    totalPrice: number;
+    freeGift: boolean;
+  } {
     const user: User | undefined = this.usersService.findOne(userId);
-
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException('User not found');
     }
 
-    const formattedCatNames = this.formatCatNames(user.cats, true);
-    const deliveryDetails = this.deliveriesService.getDeliveryDetails(user.cats);
+    const formattedCatNames = this.formatCatNames(user.cats ?? [], true);
+    const deliveryDetails = this.deliveriesService.getDeliveryDetails(user.cats ?? []);
 
     return {
-      "title": `Your next delivery for ${formattedCatNames}`,
-      "message": `Hey ${user.firstName}! In ${deliveryDetails.inDays} days' time, we'll be charging you for your next order for ${formattedCatNames}'s fresh food.`,
-      "totalPrice": deliveryDetails.totalPrice,
-      "freeGift": deliveryDetails.freeGift
-    }
+      title: `Your next delivery for ${formattedCatNames}`,
+      message: `Hey ${user.firstName}! In ${deliveryDetails.inDays} days' time, we'll be charging you for your next order for ${formattedCatNames}'s fresh food.`,
+      totalPrice: deliveryDetails.totalPrice,
+      freeGift: deliveryDetails.freeGift,
+    };
   }
 
   // Utility function
